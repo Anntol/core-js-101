@@ -65,8 +65,8 @@ function getStringFromTemplate(firstName, lastName) {
  *   'Hello, John Doe!' => 'John Doe'
  *   'Hello, Chuck Norris!' => 'Chuck Norris'
  */
-function extractNameFromTemplate(/* value */) {
-  throw new Error('Not implemented');
+function extractNameFromTemplate(value) {
+  return value.slice(7, -1);
 }
 
 
@@ -142,8 +142,8 @@ function removeFirstOccurrences(str, value) {
  *   '<span>' => 'span'
  *   '<a>' => 'a'
  */
-function unbracketTag(/* str */) {
-  throw new Error('Not implemented');
+function unbracketTag(str) {
+  return str.slice(1, -1);
 }
 
 
@@ -203,8 +203,14 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  const middleWidth = width - 2;
+  let result = `┌${'─'.repeat(middleWidth)}┐\n`;
+  for (let i = 1; i < height - 1; i += 1) {
+    result += `│${' '.repeat(middleWidth)}│\n`;
+  }
+  result += `└${'─'.repeat(middleWidth)}┘\n`;
+  return result;
 }
 
 
@@ -224,8 +230,16 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const decoded = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  const encoded = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm';
+
+  let result = '';
+  for (let i = 0; i < str.length; i += 1) {
+    const index = decoded.indexOf(str[i]);
+    result += (index >= 0) ? encoded[index] : str[i];
+  }
+  return result;
 }
 
 /**
@@ -241,8 +255,8 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  return typeof value === 'string' || value instanceof String;
 }
 
 
@@ -270,8 +284,11 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const deck = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+  const symbols = ['♣', '♦', '♥', '♠'];
+
+  return deck.indexOf(value.slice(0, -1)) + symbols.indexOf(value.slice(-1)) * deck.length;
 }
 
 
