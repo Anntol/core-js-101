@@ -28,8 +28,15 @@
  *      .catch((error) => console.log(error.message)) // 'Error: Wrong parameter is passed!
  *                                                    //  Ask her again.';
  */
-function willYouMarryMe(/* isPositiveAnswer */) {
-  throw new Error('Not implemented');
+function willYouMarryMe(isPositiveAnswer) {
+  return new Promise(
+    ((resolve, reject) => {
+      if (typeof isPositiveAnswer === 'boolean') {
+        resolve(isPositiveAnswer ? 'Hooray!!! She said "Yes"!' : 'Oh no, she said "No".');
+      }
+      reject(new Error('Wrong parameter is passed! Ask her again.'));
+    }),
+  );
 }
 
 
@@ -48,8 +55,8 @@ function willYouMarryMe(/* isPositiveAnswer */) {
  *    })
  *
  */
-function processAllPromises(/* array */) {
-  throw new Error('Not implemented');
+function processAllPromises(array) {
+  return Promise.all(array).then((values) => values);
 }
 
 /**
@@ -65,14 +72,14 @@ function processAllPromises(/* array */) {
  *      Promise.resolve('first'),
  *      new Promise(resolve => setTimeout(() => resolve('second'), 500)),
  *    ];
- *    const p = processAllPromises(promises);
+ *    const p = getFastestPromise(promises);
  *    p.then((res) => {
  *      console.log(res) // => [first]
  *    })
  *
  */
-function getFastestPromise(/* array */) {
-  throw new Error('Not implemented');
+function getFastestPromise(array) {
+  return Promise.race(array).then((value) => value);
 }
 
 /**
@@ -91,9 +98,19 @@ function getFastestPromise(/* array */) {
  *      console.log(res) // => 6
  *    });
  *
+ * solution with Promise.all
+ * const resolved = Promise.all(array)
+    .then((values) => values)
+    .catch((e) => new Error(e.message));
+  return resolved.then((res) => res.reduce(action));
  */
-function chainPromises(/* array, action */) {
-  throw new Error('Not implemented');
+function chainPromises(array, action) {
+  const resolved = array.reduce((promiseChain, currentTask) => promiseChain
+    .then((chainResults) => currentTask
+      .then((currentResult) => [...chainResults, currentResult])
+      .catch((e) => new Error(e.message))),
+  Promise.resolve([]));
+  return resolved.then((res) => res.reduce(action)).catch((e) => new Error(e.message));
 }
 
 module.exports = {
