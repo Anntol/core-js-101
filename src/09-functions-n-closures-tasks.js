@@ -113,8 +113,18 @@ function memoize(func) {
  * }, 2);
  * retryer() => 2
  */
-function retry(/* func, attempts */) {
-  throw new Error('Not implemented');
+function retry(func, attempts) {
+  return () => {
+    let attemptsCount = attempts;
+    while (attemptsCount > 0) {
+      try {
+        return func();
+      } catch (err) {
+        attemptsCount -= 1;
+      }
+    }
+    return null;
+  };
 }
 
 
@@ -189,8 +199,12 @@ function partialUsingArguments(fn, ...args1) {
  *   getId4() => 7
  *   getId10() => 11
  */
-function getIdGeneratorFunction(/* startFrom */) {
-  throw new Error('Not implemented');
+function getIdGeneratorFunction(startFrom) {
+  let curId = startFrom - 1;
+  return () => {
+    curId += 1;
+    return curId;
+  };
 }
 
 
