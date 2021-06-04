@@ -555,12 +555,7 @@ function selectMany(arr, childrenSelector) {
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
 function getElementByIndexes(arr, indexes) {
-  let elem = arr;
-  indexes.map((item) => {
-    elem = elem[item];
-    return item;
-  });
-  return elem;
+  return indexes.reduce((res, item) => res[item], arr);
 }
 
 
